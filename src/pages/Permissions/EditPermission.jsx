@@ -13,7 +13,7 @@ function EditPermission() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
-    // ✅ Axios instance with token
+    // Axios instance with token
     const axiosInstance = axios.create({
         baseURL: API_URL,
         headers: {
@@ -58,13 +58,16 @@ function EditPermission() {
 
         setError("");
         setMessage("");
-
         axiosInstance
             .put(`/api/permissions/update/${id}`, { name })
-            .then(() => {
-                navigate("/permissions", {
-                    state: { message: "Permission updated successfully!" },
-                });
+            .then((res) => {
+                if (res.data.status) {
+                    navigate("/permissions", {
+                        state: { message: res.data.message }, // success msg
+                    });
+                } else {
+                    setError(res.data.message); // backend ka error msg show kare
+                }
             })
             .catch((err) => {
                 if (err.response) {
@@ -75,8 +78,9 @@ function EditPermission() {
                         const errors = err.response.data.errors;
                         const messages = Object.values(errors).flat().join(" ");
                         setError(messages);
-                    } else if (err.response.data.update_error) {
-                        setError(err.response.data.update_error);
+                    } else if (err.response.data.message) {
+                        // backend ka custom error
+                        setError(err.response.data.message);
                     } else {
                         setError("Something went wrong!");
                     }

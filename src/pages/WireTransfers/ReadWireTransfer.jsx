@@ -118,7 +118,7 @@ function ReadWireTransfer() {
                                         <th>Remaining Amount</th>
                                         <th>Bank</th>
                                         <th>Status</th>
-                                        <th>Date</th>
+                                        {/* <th>Date</th> */}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -153,7 +153,7 @@ function ReadWireTransfer() {
                                                                 : 'Failed'}
                                                     </span>
                                                 </td>
-                                                <td>{formatDate(item.date)}</td>
+                                                {/* <td>{formatDate(item.date)}</td> */}
                                                 <td>
                                                     <Link to={`/wire-transfers/show/${item.id}`} className="btn btn-sm text-primary me-2">
                                                         <i className="bi bi-eye"></i>

@@ -134,7 +134,7 @@ function ReadExpense() {
                     <th>Bank</th>
                     <th>Expense Category</th>
                     <th>Amount</th>
-                    <th>Date</th>
+                    {/* <th>Date</th> */}
                     <th>Details</th>
                     <th>Receipt</th>
                     <th>Actions</th>
@@ -170,7 +170,7 @@ function ReadExpense() {
                         </td>
                         <td>{item.category?.name || "N/A"}</td>
                         <td>{item.amount}</td>
-                        <td>{formatDate(item.date)}</td>
+                        {/* <td>{formatDate(item.date)}</td> */}
                         <td>{item.details}</td>
                         <td>{item.receipt}</td>
                         <td>

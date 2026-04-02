@@ -79,21 +79,30 @@ function ReadPermission() {
       });
   };
 
-  // Delete permission
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this permission?")) {
       axiosInstance
         .delete(`/api/permissions/delete/${id}`)
         .then((res) => {
-          setMessage(res.data.message || "Permission deleted successfully!");
-          getPermissions(currentPage);
+          if (res.data.status) {
+            setMessage(res.data.message || "Permission deleted successfully!");
+            getPermissions(currentPage);
+          } else {
+            setError(res.data.message); // Backend ka custom error show
+          }
         })
         .catch((err) => {
-          if (err.response && err.response.status === 401) {
-            localStorage.removeItem("token");
-            navigate("/");
+          if (err.response) {
+            if (err.response.status === 401) {
+              localStorage.removeItem("token");
+              navigate("/");
+            } else if (err.response.data.message) {
+              setError(err.response.data.message); // Backend ka error message
+            } else {
+              setError("Failed to delete permission.");
+            }
           } else {
-            setError("Failed to delete permission.");
+            setError("Network error occurred.");
           }
         });
     }
@@ -212,9 +221,8 @@ function ReadPermission() {
                   {[...Array(pagination.last_page)].map((_, index) => (
                     <li
                       key={index}
-                      className={`page-item ${
-                        pagination.current_page === index + 1 ? "active" : ""
-                      }`}
+                      className={`page-item ${pagination.current_page === index + 1 ? "active" : ""
+                        }`}
                     >
                       <button
                         className="page-link"
@@ -229,9 +237,8 @@ function ReadPermission() {
                   ))}
 
                   <li
-                    className={`page-item ${
-                      pagination.current_page === pagination.last_page ? "disabled" : ""
-                    }`}
+                    className={`page-item ${pagination.current_page === pagination.last_page ? "disabled" : ""
+                      }`}
                   >
                     <button
                       className="page-link"
